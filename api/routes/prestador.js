@@ -49,10 +49,27 @@ router.get('/', async(req, res)=> {
 })
 
 // GET /api/prestadores/:id
-// lista de todos os prestadores
+// lista os prestadores pelo id
 router.get('/:id', async(req, res)=>{
     try{
         db.collection(nomeCollection).find({'_id': {$eq:  ObjectId(req.params.id)}})
+        .toArray((err, docs)=>{
+            if(err)
+                res.status(400).json(err) //bad request
+            else    
+                res.status(200).json(docs)
+        })
+    }catch(err){
+        res.status(500).json({"error": err.message})
+    }
+})
+
+// GET /api/prestadores/razao/:razao
+// lista os prestadores pela razao
+router.get('/razao/:razao', async(req, res)=>{
+    try{
+        db.collection(nomeCollection)
+        .find({'razao_social': {$regex:  req.params.razao, $options: "i"}})
         .toArray((err, docs)=>{
             if(err)
                 res.status(400).json(err) //bad request
@@ -73,8 +90,8 @@ router.delete('/:id', async(req, res)=>{
     .catch(err => res.status(400).json(err))
 })
 
-// DELETE /api/prestadores/:id
-// Apaga o prestador
+// POST /api/prestadores/:id
+// Insere um prestador
 router.post('/', validaPrestador, async(req, res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -89,6 +106,25 @@ router.post('/', validaPrestador, async(req, res)=>{
 
     }
 
+})
+
+router.put('/', validaPrestador, async(req, res)=>{
+    let idDocumento = req.body._id //armazena o id do documento
+    delete req.body._id //iremos remover o id do body
+
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json(({
+            errors: errors.array()
+        }))
+    }else{
+        await db.collection(nomeCollection)
+        .updateOne({'_id': {$eq: ObjectId(idDocumento)}},
+                    {$set: req.body})
+        .then(result => res.status(200).send(result))
+        .catch(err => res.status(400).json(err))
+
+    }
 })
 
 
