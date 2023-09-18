@@ -2,7 +2,7 @@ use('FatecItu')
 
 db.prestadores.insertOne({
     "cnpj": "13254634164161",
-    "razao_social": "JOSUÉ ALVES ME",
+    "razao_social": "Romerio da silva",
     "cnae_fiscal": 451510,
     "nome_fantasia": "JOSUÉ BOY",
     "data_inicio_atividade": "2020-08-01",
