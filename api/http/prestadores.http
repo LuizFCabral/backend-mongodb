@@ -46,7 +46,7 @@ Content-Type: application/json
     "cnpj": "13254635164161",
     "razao_social": "Strogonoff Açucarado",
     "cnae_fiscal": 451510,
-    "nome_fantasia": "JOSUÉ BOY",
+    "nome_fantasia": "Jhonson SLT",
     "data_inicio_atividade": "2020-08-01",
     "localizacao": {
       "type": "Point",
@@ -55,4 +55,4 @@ Content-Type: application/json
         -47.2963
       ]
     }
-  },
+}
